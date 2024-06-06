@@ -2,6 +2,8 @@
 """
 No module importing
 """
+
+
 def floor(n: float) -> int:
     """
     function which takes a float n as argument
