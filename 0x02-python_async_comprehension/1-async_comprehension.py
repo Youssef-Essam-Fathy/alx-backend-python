@@ -12,6 +12,4 @@ async def async_comprehension() -> List[float]:
     """
     Asynchronously generates a list of floats using async_generator.
     """
-    async for i in async_generator():
-        wanted = [i]
-    return wanted
+    return [i async for i in async_generator()]
