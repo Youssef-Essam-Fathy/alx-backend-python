@@ -89,7 +89,7 @@ class TestGetJson(unittest.TestCase):
           url (str): _description_
         """
         mock_url = Mock()
-        mock_url.get_data.return_value = test_payload
+        mock_url.json.return_value = test_payload
         requests_get.return_value = mock_url
 
         result = get_json(test_url)
