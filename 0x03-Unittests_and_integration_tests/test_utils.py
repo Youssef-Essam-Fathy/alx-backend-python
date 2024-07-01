@@ -80,23 +80,23 @@ class TestGetJson(unittest.TestCase):
         ("http://example.com", {"payload": True}),
         ("http://holberton.io", {"payload": False})
     ])
-    @patch('requests.get')
+    @patch('utils.requests.get')
     def test_get_json(self, test_url: str,
-                      payload: object, requests_get: Any):
+                      test_payload: dict, requests_get: Any):
         """_summary_
 
       Args:
           url (str): _description_
         """
         mock_url = Mock()
-        mock_url.get_data.return_value = payload
+        mock_url.get_data.return_value = test_payload
         requests_get.return_value = mock_url
 
         result = get_json(test_url)
 
         requests_get.assert_called_once_with(test_url)
 
-        self.assertEqual(payload, result)
+        self.assertEqual(test_payload, result)
 
 
 if __name__ == "__main__":
