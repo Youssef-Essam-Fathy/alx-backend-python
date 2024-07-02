@@ -7,11 +7,12 @@ import unittest
 from unittest.mock import (
     patch,
     Mock
-  )
+)
 from utils import (
     access_nested_map,
-    get_json
-  )
+    get_json,
+    memoize
+)
 from parameterized import parameterized
 from typing import (
     Mapping,
@@ -97,6 +98,47 @@ class TestGetJson(unittest.TestCase):
         requests_get.assert_called_once_with(test_url)
 
         self.assertEqual(test_payload, result)
+
+
+class TestMemoize(unittest.TestCase):
+    """
+    Unit tests for the memoize decorator.
+    """
+    def test_memoize(self) -> None:
+        """
+        Test the memoize decorator to ensure it caches
+        the result of a property method.
+        """
+        class TestClass:
+            """
+            A test class to be used for testing
+            the memoize decorator.
+            """
+            def a_method(self):
+                """
+                A sample method that returns a fixed value.
+                """
+                return 42
+
+            @memoize
+            def a_property(self):
+                """
+                A memoized property that calls a_method
+                and returns its result.
+                """
+                return self.a_method()
+
+        with patch.object(
+            TestClass,
+            "a_method",
+            return_value=42
+        ) as memo:
+            test_class = TestClass()
+            result1 = test_class.a_property
+            result2 = test_class.a_property
+            self.assertEqual(result1, 42)
+            self.assertEqual(result2, 42)
+            memo.assert_called_once()
 
 
 if __name__ == "__main__":
